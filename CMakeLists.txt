@@ -30,7 +30,7 @@ target_compile_options(mspm0c110x_build_options INTERFACE
     -fno-common
     -Wall
     -Wextra
-    -Os
+    -O1
 )
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/mspm0c110x.cmake)

@@ -13,7 +13,6 @@ static int printed_characters;
 
 static void ssd1306_putc(int character)
 {
-    static const uint8_t blank = 0U;
     const uint8_t *columns;
 
     if (character == '\n') {
