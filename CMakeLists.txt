@@ -30,10 +30,11 @@ target_compile_options(mspm0c110x_build_options INTERFACE
     -fno-common
     -Wall
     -Wextra
-    -O1
+    -Os
 )
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/mspm0c110x.cmake)
 
 add_subdirectory(lib)
+add_subdirectory(drv)
 add_subdirectory(examples)

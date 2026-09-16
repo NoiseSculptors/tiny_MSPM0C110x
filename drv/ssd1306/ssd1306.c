@@ -1,24 +1,23 @@
 #include "ssd1306.h"
-
-static ssd1306_write_fn ssd1306_write;
+#include "ssd1306_conf.h"
 
 static void ssd1306_command(uint8_t command)
 {
     uint8_t packet[2] = {0x00U, command};
 
-    (void)ssd1306_write(SSD1306_ADDRESS, packet, sizeof(packet));
+    ssd1306_conf_write(SSD1306_ADDRESS, packet, sizeof(packet));
 }
 
 static void ssd1306_command_val(uint8_t command, uint8_t value)
 {
     uint8_t packet[3] = {0x00U, command, value};
 
-    (void)ssd1306_write(SSD1306_ADDRESS, packet, sizeof(packet));
+    ssd1306_conf_write(SSD1306_ADDRESS, packet, sizeof(packet));
 }
 
-void ssd1306_init(ssd1306_write_fn write)
+void ssd1306_init(void)
 {
-    ssd1306_write = write;
+    ssd1306_conf_init();
 
     ssd1306_command(0xAEU);
     ssd1306_command_val(0xD5U, 0x80U);
@@ -73,5 +72,5 @@ void ssd1306_write_page(const uint8_t *data, uint8_t length)
         packet[1U + i] = data[i];
     }
 
-    (void)ssd1306_write(SSD1306_ADDRESS, packet, (uint8_t)(length + 1U));
+    ssd1306_conf_write(SSD1306_ADDRESS, packet, (uint8_t)(length + 1U));
 }

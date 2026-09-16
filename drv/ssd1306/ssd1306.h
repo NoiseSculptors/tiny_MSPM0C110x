@@ -7,10 +7,7 @@
 #define SSD1306_PAGES 8U
 #define SSD1306_ADDRESS 0x3CU
 
-typedef int (*ssd1306_write_fn)(uint8_t address, const uint8_t *data,
-    uint8_t length);
-
-void ssd1306_init(ssd1306_write_fn write);
+void ssd1306_init(void);
 void ssd1306_set_contrast(uint8_t contrast);
 void ssd1306_power(int on);
 void ssd1306_set_page(uint8_t page);

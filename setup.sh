@@ -2,6 +2,7 @@
 set -eu
 
 sdk_url=https://github.com/TexasInstruments/mspm0-sdk
+font8x8_url=https://github.com/dhepper/font8x8
 
 if ! command -v git >/dev/null 2>&1; then
     printf '%s\n' 'Error: git is required to run setup.sh.' >&2
@@ -103,3 +104,29 @@ git -C sdk sparse-checkout set --no-cone \
     /source/third_party/CMSIS/Core/Include/mpu_armv7.h
 
 git -C sdk checkout --detach "$sdk_commit"
+
+configured_font8x8_url=$(git config -f .gitmodules --get submodule.lib/font8x8.url 2>/dev/null || true)
+if [ -z "$configured_font8x8_url" ]; then
+    if [ -e lib/font8x8 ] || [ -L lib/font8x8 ]; then
+        printf '%s\n' 'Error: lib/font8x8 exists but is not configured as the font8x8 submodule.' >&2
+        printf '%s\n' 'Remove lib/font8x8 and run setup.sh again.' >&2
+        exit 1
+    fi
+    git submodule add "$font8x8_url" lib/font8x8
+elif [ "$configured_font8x8_url" != "$font8x8_url" ]; then
+    printf 'Error: submodule lib/font8x8 has unexpected URL: %s\n' "$configured_font8x8_url" >&2
+    printf 'Expected: %s\n' "$font8x8_url" >&2
+    exit 1
+fi
+
+font8x8_entry=$(git ls-files --stage -- lib/font8x8)
+case "$font8x8_entry" in
+    "160000 "*) ;;
+    *)
+        printf '%s\n' 'Error: lib/font8x8 is not recorded as a Git submodule.' >&2
+        exit 1
+        ;;
+esac
+
+git submodule sync -- lib/font8x8
+git submodule update --init --depth 1 -- lib/font8x8

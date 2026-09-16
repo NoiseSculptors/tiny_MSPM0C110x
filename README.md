@@ -50,6 +50,17 @@ Add reusable libraries under `lib/`, give each one a CMake target, and register
 it in `lib/CMakeLists.txt`. Libraries should publish their own include paths;
 firmwares should consume them through `LINK_LIBRARIES`.
 
+## Display Driver Configuration
+
+The `st7735s` and `ssd1306` drivers include example hardware configurations in
+`drv/st7735s/st7735s_conf.c` and `drv/ssd1306/ssd1306_conf.c`. These files are
+compiled into their respective driver libraries and contain the pin, peripheral,
+and timing setup for the included MSPM0C110x examples.
+
+Modify the matching `*_conf.c` file when using different pins, peripherals, or
+display wiring. The configuration headers are internal driver interfaces; normal
+application code should use the public driver headers instead.
+
 ## Updating the SDK
 
 The project is pinned to SDK commit

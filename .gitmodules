@@ -1,3 +1,6 @@
 [submodule "sdk"]
 	path = sdk
 	url = https://github.com/TexasInstruments/mspm0-sdk
+[submodule "lib/font8x8"]
+	path = lib/font8x8
+	url = https://github.com/dhepper/font8x8
