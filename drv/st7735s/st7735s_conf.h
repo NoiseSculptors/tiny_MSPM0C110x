@@ -26,18 +26,22 @@
 
 #define ST7735S_REVERSE_BRIGHTNESS  (1U)
 
-                                //      MV
-                                //   MY | RGB
-                                //    | | |
-#define ST7735S_MADCTL_VALUE        0b10101000U
-                                //     | | |
-                                //    MX | MH
-                                //       ML
+/* MADCTL
 
-#define ST7735S_WIDTH               160U
-#define ST7735S_HEIGHT              80U
-#define ST7735S_X_OFFSET            0U
-#define ST7735S_Y_OFFSET            24U
+        MV
+     MY | RGB
+      | | |
+    0b10101000U
+       | | |
+      MX | MH
+         ML
+ */
+#define ST7735S_MADCTL_VALUE        (0xA8U)
+
+#define ST7735S_WIDTH               (160U)
+#define ST7735S_HEIGHT              (80U)
+#define ST7735S_X_OFFSET            (0U)
+#define ST7735S_Y_OFFSET            (24U)
 
 void st7735s_conf_backlight_init(void);
 void st7735s_conf_delay_ms(uint32_t milliseconds);

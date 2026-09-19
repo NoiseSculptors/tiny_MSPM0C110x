@@ -75,6 +75,8 @@ git -C sdk sparse-checkout set --no-cone \
     /source/ti/devices/msp/peripherals/m0p/hw_factoryregion.h \
     /source/ti/devices/msp/peripherals/m0p/hw_sysctl.h \
     /source/ti/devices/msp/peripherals/m0p/sysctl/hw_sysctl_mspm0c110x.h \
+    /source/ti/driverlib/dl_adc12.c \
+    /source/ti/driverlib/dl_adc12.h \
     /source/ti/driverlib/dl_common.c \
     /source/ti/driverlib/dl_common.h \
     /source/ti/driverlib/dl_gpio.c \
