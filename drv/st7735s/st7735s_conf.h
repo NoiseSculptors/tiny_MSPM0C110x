@@ -26,6 +26,9 @@
 
 #define ST7735S_REVERSE_BRIGHTNESS  (1U)
 
+/* for lower flash and SRAM usage, larger version up to 1/3x faster */
+#define ST7735S_PRINTF_OPTIMIZE_SIZE (1U)
+
 /* MADCTL
 
         MV

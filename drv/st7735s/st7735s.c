@@ -159,7 +159,8 @@ void st7735s_draw_pixel(uint16_t x, uint16_t y, uint16_t color)
 
 static void st7735s_draw_pixel_clipped(int x, int y, uint16_t color)
 {
-    if (x < 0 || y < 0 || x >= ST7735S_WIDTH || y >= ST7735S_HEIGHT)
+    if (x < 0 || y < 0 || x >= (int)ST7735S_WIDTH ||
+        y >= (int)ST7735S_HEIGHT)
         return;
     st7735s_draw_pixel((uint16_t)x, (uint16_t)y, color);
 }
@@ -177,13 +178,13 @@ void st7735s_fill_rect(uint16_t x, uint16_t y, uint16_t width,
 static void st7735s_draw_hline_clipped(int x0, int x1, int y,
     uint16_t color)
 {
-    if (x0 > x1 || y < 0 || y >= ST7735S_HEIGHT ||
-        x1 < 0 || x0 >= ST7735S_WIDTH)
+    if (x0 > x1 || y < 0 || y >= (int)ST7735S_HEIGHT ||
+        x1 < 0 || x0 >= (int)ST7735S_WIDTH)
         return;
     if (x0 < 0)
         x0 = 0;
-    if (x1 >= ST7735S_WIDTH)
-        x1 = ST7735S_WIDTH - 1;
+    if (x1 >= (int)ST7735S_WIDTH)
+        x1 = (int)ST7735S_WIDTH - 1;
 
     st7735s_fill_rect((uint16_t)x0, (uint16_t)y,
         (uint16_t)(x1 - x0 + 1), 1U, color);
@@ -192,13 +193,13 @@ static void st7735s_draw_hline_clipped(int x0, int x1, int y,
 static void st7735s_draw_vline_clipped(int x, int y0, int y1,
     uint16_t color)
 {
-    if (y0 > y1 || x < 0 || x >= ST7735S_WIDTH ||
-        y1 < 0 || y0 >= ST7735S_HEIGHT)
+    if (y0 > y1 || x < 0 || x >= (int)ST7735S_WIDTH ||
+        y1 < 0 || y0 >= (int)ST7735S_HEIGHT)
         return;
     if (y0 < 0)
         y0 = 0;
-    if (y1 >= ST7735S_HEIGHT)
-        y1 = ST7735S_HEIGHT - 1;
+    if (y1 >= (int)ST7735S_HEIGHT)
+        y1 = (int)ST7735S_HEIGHT - 1;
 
     st7735s_fill_rect((uint16_t)x, (uint16_t)y0, 1U,
         (uint16_t)(y1 - y0 + 1), color);
