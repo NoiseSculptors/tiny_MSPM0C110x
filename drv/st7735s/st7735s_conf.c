@@ -120,6 +120,22 @@ void st7735s_conf_spi_write(const uint8_t *data, uint32_t length)
     while (DL_SPI_isBusy(SPI0)) {}
 }
 
+/* used for fast fill */
+void st7735s_conf_spi_write_single_data(const uint16_t data, uint32_t length)
+{
+    /* we are sending data */
+    DL_GPIO_setPins(GPIOA, ST7735S_DC_PIN);
+
+    for (uint32_t index = 0U; index < length; ++index) {
+        while(DL_SPI_isTXFIFOFull(SPI0)){}
+        DL_SPI_transmitData8(SPI0, data>>8);
+        while(DL_SPI_isTXFIFOFull(SPI0)){}
+        DL_SPI_transmitData8(SPI0, data&0xff);
+    }
+
+    while (DL_SPI_isBusy(SPI0)) {}
+}
+
 void st7735s_conf_hw_power(int enabled)
 {
     /* on my board, low enables the display (through p-mosfet) */

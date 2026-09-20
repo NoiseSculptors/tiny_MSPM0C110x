@@ -50,6 +50,7 @@ void st7735s_conf_hw_power(int enabled);
 void st7735s_conf_set_brightness(uint8_t brightness);
 void st7735s_conf_spi_init(void);
 void st7735s_conf_spi_write(const uint8_t *data, uint32_t length);
+void st7735s_conf_spi_write_single_data(const uint16_t data, uint32_t length);
 void st7735s_conf_reset_peripherals(void);
 
 #endif
