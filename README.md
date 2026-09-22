@@ -34,6 +34,34 @@ command with the desired `MSPM0_DEVICE` before building.
 Each firmware example produces its own `.elf`, `.bin`, `.hex`, and `.map` in
 its build directory.
 
+## Flashing With pyOCD
+
+The following workflow has been tested with
+[dap42](https://github.com/devanlai/dap42), an STM32F103-based debug probe.
+
+Only once:
+
+```sh
+pyocd pack update
+pyocd pack install MSPM0
+```
+
+Build and flash (replace with your target):
+
+```sh
+export opt=pack.debug_sequences.disabled_sequences=ResetSystem
+pyocd flash -O$opt --target mspm0c1103 build/examples/<an_example>/*<.bin|.elf>
+pyocd reset --target mspm0c1103 -O$opt
+```
+
+Debug:
+```sh
+pyocd gdb --target mspm0c1103 -O$opt
+```
+
+The probe's NRST connection is not required. This setup has only been tested
+with dap42.
+
 ## Adding Examples And Libraries
 
 Examples live under `examples/`. Add a directory with a `CMakeLists.txt` and
