@@ -9,4 +9,5 @@ mspm0c110x_add_firmware(
         ${MSPM0C110X_SDK_SOURCE_DIR}/ti/driverlib/dl_timer.c
         ${MSPM0C110X_SDK_SOURCE_DIR}/ti/driverlib/dl_uart.c
     LINK_LIBRARIES xprintf m
-)
+) 
+

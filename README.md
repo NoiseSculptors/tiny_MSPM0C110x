@@ -49,6 +49,7 @@ pyocd pack install MSPM0
 Build and flash (replace with your target):
 
 ```sh
+<build with cmake>
 export opt=pack.debug_sequences.disabled_sequences=ResetSystem
 pyocd flash -O$opt --target mspm0c1103 build/examples/<an_example>/*<.bin|.elf>
 pyocd reset --target mspm0c1103 -O$opt

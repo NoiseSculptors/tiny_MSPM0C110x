@@ -76,9 +76,8 @@ static void uart_put_uint(unsigned value)
     }
 }
 
-static void print_readme(const BYTE *buffer, UINT count)
+static void print_readme(const BYTE *buffer, UINT count, UINT *column)
 {
-    UINT column = 0U;
     UINT index;
 
     for (index = 0U; index < count; index++) {
@@ -89,24 +88,21 @@ static void print_readme(const BYTE *buffer, UINT count)
 
         if (character == '\n') {
             uart_puts("\r\n");
-            column = 0U;
+            *column = 0U;
             continue;
         }
 
         if (character < ' ' || character > '~')
             character = '.';
 
-        if (column == 80U) {
+        if (*column == 80U) {
             uart_puts("\r\n");
-            column = 0U;
+            *column = 0U;
         }
 
         uart_putc(character);
-        column++;
+        (*column)++;
     }
-
-    if (column != 0U)
-        uart_puts("\r\n");
 }
 
 static void print_result(const char *operation, FRESULT result)
@@ -144,6 +140,8 @@ static void sdcard_example(void)
     static BYTE buffer[BUFFER_SIZE];
     UINT transferred;
     UINT index;
+    UINT column = 0U;
+    UINT total_transferred = 0U;
     FRESULT result;
 
     print_line();
@@ -162,20 +160,27 @@ static void sdcard_example(void)
         return;
     }
 
-    uart_puts("Reading README.TXT (up to 512 bytes)...\r\n");
-
-    result = pf_read(buffer, BUFFER_SIZE, &transferred);
-    if (result != FR_OK) {
-        print_result("Read README.TXT", result);
-        return;
-    }
-    uart_puts("README.TXT bytes read: ");
-    uart_put_uint((unsigned)transferred);
-    uart_puts("\r\n");
+    uart_puts("Reading README.TXT until end of file...\r\n");
 
     print_line();
 
-    print_readme(buffer, transferred);
+    do {
+        result = pf_read(buffer, BUFFER_SIZE, &transferred);
+        if (result != FR_OK) {
+            print_result("Read README.TXT", result);
+            return;
+        }
+
+        total_transferred += transferred;
+        print_readme(buffer, transferred, &column);
+    } while (transferred != 0U);
+
+    if (column != 0U)
+        uart_puts("\r\n");
+
+    uart_puts("README.TXT bytes read: ");
+    uart_put_uint((unsigned)total_transferred);
+    uart_puts("\r\n");
 
     for (index = 0U; index < BUFFER_SIZE; index++) {
         buffer[index] = (BYTE)(' ' + (index % ('~' - ' ' + 1)));

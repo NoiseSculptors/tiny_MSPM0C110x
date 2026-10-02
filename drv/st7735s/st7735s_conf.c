@@ -13,12 +13,6 @@ static const IOMUX_PINCM st7735s_gpio_pins[] = {
     ST7735S_RST_IOMUX,
 };
 
-static const IOMUX_PINCM st7735s_spi_pins[] = {
-    ST7735S_CS_IOMUX,
-    ST7735S_PICO_IOMUX,
-    ST7735S_SCLK_IOMUX,
-};
-
 void st7735s_conf_reset_peripherals(void)
 {
     DL_SPI_reset(SPI0);
@@ -54,12 +48,6 @@ void st7735s_conf_spi_init(void)
         ST7735S_PICO_FUNCTION);
     DL_GPIO_initPeripheralOutputFunction(ST7735S_CS_IOMUX,
         ST7735S_CS_FUNCTION);
-
-    for (uint32_t i = 0U; i < sizeof(st7735s_spi_pins) /
-        sizeof(st7735s_spi_pins[0]); ++i) {
-        DL_GPIO_setDigitalInternalResistor(st7735s_spi_pins[i],
-            DL_GPIO_RESISTOR_PULL_DOWN);
-    }
 
     DL_SPI_init(SPI0, &config);
     DL_SPI_setClockConfig(SPI0, &clock_config);

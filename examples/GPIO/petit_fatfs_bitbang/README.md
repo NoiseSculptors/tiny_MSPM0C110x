@@ -7,7 +7,7 @@ combined with the https://elm-chan.org/ Petit FatFs library.
 
 The code performs the following actions:
 1. Mounts a FAT32 filesystem on the SD card.
-2. Reads up to 512 bytes from the file `README.TXT`.
+2. Reads the file `README.TXT` until the end of the file.
 3. Writes 512 generated ASCII characters to the file `WRITEME.TXT`.
 
 ## Important Limitations

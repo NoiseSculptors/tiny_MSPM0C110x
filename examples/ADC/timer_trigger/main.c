@@ -96,7 +96,7 @@ static void adc_init(void)
     static const DL_ADC12_ClockConfig clock_config = {
         .clockSel    = DL_ADC12_CLOCK_ULPCLK,
         .freqRange   = DL_ADC12_CLOCK_FREQ_RANGE_1_TO_4,
-        .divideRatio = DL_ADC12_CLOCK_DIVIDE_1,
+        .divideRatio = DL_ADC12_CLOCK_DIVIDE_8,
     };
 
     DL_GPIO_initPeripheralAnalogFunction(ADC_X_IOMUX);
@@ -150,7 +150,7 @@ static void timer_init(void)
 {
     static const DL_TimerA_ClockConfig clock_config = {
         .clockSel    = DL_TIMER_CLOCK_LFCLK,
-        .divideRatio = DL_TIMER_CLOCK_DIVIDE_1,
+        .divideRatio = DL_TIMER_CLOCK_DIVIDE_8,
         .prescale    = 255U,
     };
 

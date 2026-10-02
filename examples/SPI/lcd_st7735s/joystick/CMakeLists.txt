@@ -11,3 +11,4 @@ mspm0c110x_add_firmware(
     LINK_LIBRARIES
         st7735s
 )
+

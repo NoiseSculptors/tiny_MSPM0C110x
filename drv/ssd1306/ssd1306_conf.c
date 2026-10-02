@@ -4,8 +4,8 @@
 #include <ti/driverlib/dl_i2c.h>
 #include <ti/driverlib/m0p/dl_core.h>
 
-#define SSD1306_SDA_IOMUX       (IOMUX_PINCM1)
-#define SSD1306_SCL_IOMUX       (IOMUX_PINCM12)
+#define SSD1306_SDA_IOMUX       (IOMUX_PINCM1)  // A0
+#define SSD1306_SCL_IOMUX       (IOMUX_PINCM12) // A11
 #define SSD1306_SDA_FUNCTION    (IOMUX_PINCM1_PF_I2C0_SDA)
 #define SSD1306_SCL_FUNCTION    (IOMUX_PINCM12_PF_I2C0_SCL)
 #define SSD1306_POWER_STARTUP_DELAY (16U)
@@ -25,13 +25,19 @@ void ssd1306_conf_init(void)
     delay_cycles(SSD1306_POWER_STARTUP_DELAY);
 
     DL_GPIO_initPeripheralInputFunctionFeatures(SSD1306_SDA_IOMUX,
-        SSD1306_SDA_FUNCTION, DL_GPIO_INVERSION_DISABLE,
-        DL_GPIO_RESISTOR_NONE, DL_GPIO_HYSTERESIS_DISABLE,
+        SSD1306_SDA_FUNCTION,
+        DL_GPIO_INVERSION_DISABLE,
+        DL_GPIO_RESISTOR_NONE,
+        DL_GPIO_HYSTERESIS_DISABLE,
         DL_GPIO_WAKEUP_DISABLE);
+
     DL_GPIO_initPeripheralInputFunctionFeatures(SSD1306_SCL_IOMUX,
-        SSD1306_SCL_FUNCTION, DL_GPIO_INVERSION_DISABLE,
-        DL_GPIO_RESISTOR_NONE, DL_GPIO_HYSTERESIS_DISABLE,
+        SSD1306_SCL_FUNCTION,
+        DL_GPIO_INVERSION_DISABLE,
+        DL_GPIO_RESISTOR_NONE,
+        DL_GPIO_HYSTERESIS_DISABLE,
         DL_GPIO_WAKEUP_DISABLE);
+
     DL_GPIO_enableHiZ(SSD1306_SCL_IOMUX);
     DL_GPIO_enableHiZ(SSD1306_SDA_IOMUX);
 
@@ -52,6 +58,7 @@ void ssd1306_conf_write(uint8_t address, const uint8_t *data, uint8_t length)
     uint32_t status;
 
     timeout = SSD1306_I2C_TIMEOUT;
+
     while ((DL_I2C_getControllerStatus(I2C0) &
         DL_I2C_CONTROLLER_STATUS_IDLE) == 0U) {
         if (timeout-- == 0U)
@@ -59,7 +66,9 @@ void ssd1306_conf_write(uint8_t address, const uint8_t *data, uint8_t length)
     }
 
     DL_I2C_flushControllerTXFIFO(I2C0);
+
     index = DL_I2C_fillControllerTXFIFO(I2C0, data, length);
+
     DL_I2C_startControllerTransfer(I2C0, address,
         DL_I2C_CONTROLLER_DIRECTION_TX, length);
 

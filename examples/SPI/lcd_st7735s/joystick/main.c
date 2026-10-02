@@ -2,7 +2,7 @@
 
 #include <ti/driverlib/dl_adc12.h>
 #include <ti/driverlib/dl_gpio.h>
-#include <ti/driverlib/dl_timera.h>
+#include <ti/driverlib/dl_timerg.h>
 #include <ti/driverlib/m0p/sysctl/dl_sysctl_mspm0c110x.h>
 
 #include "st7735s_printf.h"
@@ -14,7 +14,7 @@
 #define ADC_X_IOMUX         (IOMUX_PINCM25)
 #define ADC_Y_IOMUX         (IOMUX_PINCM23)
 
-#define CHANID_TIMA0_PUB_1  (1U)
+#define CHANID_TIMG8_PUB_1  (1U)
 #define CHANID_ADC0_SUB_1   (1U)
 
 #define SCREEN_CENTER_X     (79)
@@ -27,16 +27,14 @@
 
 #define GREEN               (0x07E0U)
 
-static volatile uint8_t adc_sample_ready;
-
 static void hw_init(void)
 {
-    DL_GPIO_reset(GPIOA);
-    DL_TimerA_reset(TIMA0);
+    // DL_GPIO_reset(GPIOA); already included in st7735s_init();
+    DL_TimerG_reset(TIMG8);
     DL_ADC12_reset(ADC0);
 
-    DL_GPIO_enablePower(GPIOA);
-    DL_TimerA_enablePower(TIMA0);
+    // DL_GPIO_enablePower(GPIOA);
+    DL_TimerG_enablePower(TIMG8);
     DL_ADC12_enablePower(ADC0);
 
     delay_cycles(POWER_STARTUP_DELAY);
@@ -44,29 +42,29 @@ static void hw_init(void)
 
 static void timer_init(void)
 {
-    static const DL_TimerA_ClockConfig clock_config = {
+    static const DL_TimerG_ClockConfig clock_config = {
         .clockSel    = DL_TIMER_CLOCK_LFCLK,
         .divideRatio = DL_TIMER_CLOCK_DIVIDE_1,
         .prescale    = 255U,
     };
 
-    static const DL_TimerA_TimerConfig timer_config = {
+    static const DL_TimerG_TimerConfig timer_config = {
         .period     = 1U,
         .timerMode  = DL_TIMER_TIMER_MODE_PERIODIC,
         .startTimer = DL_TIMER_START,
     };
 
-    DL_TimerA_setClockConfig(TIMA0, &clock_config);
-    DL_TimerA_initTimerMode(TIMA0, &timer_config);
-    DL_TimerA_enableClock(TIMA0);
+    DL_TimerG_setClockConfig(TIMG8, &clock_config);
+    DL_TimerG_initTimerMode(TIMG8, &timer_config);
+    DL_TimerG_enableClock(TIMG8);
 
-    DL_TimerA_enableEvent(TIMA0,
-        DL_TIMERA_EVENT_ROUTE_1,
-        DL_TIMERA_EVENT_ZERO_EVENT);
+    DL_TimerG_enableEvent(TIMG8,
+        DL_TIMERG_EVENT_ROUTE_1,
+        DL_TIMERG_EVENT_ZERO_EVENT);
 
-    DL_TimerA_setPublisherChanID(TIMA0,
-        DL_TIMERA_PUBLISHER_INDEX_0,
-        CHANID_TIMA0_PUB_1);
+    DL_TimerG_setPublisherChanID(TIMG8,
+        DL_TIMERG_PUBLISHER_INDEX_0,
+        CHANID_TIMG8_PUB_1);
 }
 
 static void adc_init(void)
@@ -118,12 +116,10 @@ static void adc_init(void)
 
     DL_ADC12_configHwAverage(ADC0, DL_ADC12_HW_AVG_NUM_ACC_4,
         DL_ADC12_HW_AVG_DEN_DIV_BY_4);
-
-    DL_ADC12_enableConversions(ADC0);
 }
 
 /* we draw circle like this to minimize flickering, as we don't have a
- * framebuffer */
+   framebuffer */
 static void set_circle_pixel(uint8_t *row, int row_y, int row_x0,
     int width, int x, int y)
 {
@@ -244,12 +240,14 @@ int main(void)
 
     hw_init();
     st7735s_init();
-    timer_init();
     adc_init();
+    timer_init();
 
     st7735s_set_brightness(100U);
 
     st7735s_fill_screen(0U);
+
+    DL_ADC12_enableConversions(ADC0);
 
     calibrate(&zero_x, &zero_y);
 

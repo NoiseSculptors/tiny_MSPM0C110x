@@ -18,7 +18,7 @@ static void gpio_init(void)
 
     DL_GPIO_initDigitalOutput(LEDA_IOMUX);
     DL_GPIO_initDigitalOutput(LEDB_IOMUX);
-    DL_GPIO_clearPins(GPIOA, LEDA_PIN | LEDB_PIN);
+
     DL_GPIO_enableOutput(GPIOA, LEDA_PIN | LEDB_PIN);
 }
 
@@ -30,6 +30,9 @@ int main(void)
 
     gpio_init();
     
+    DL_GPIO_clearPins(GPIOA, LEDA_PIN | LEDB_PIN);
+    DL_GPIO_setPins(GPIOA, LEDA_PIN);
+
     while (1) {
         DL_GPIO_togglePins(GPIOA, LEDA_PIN | LEDB_PIN);
         delay_cycles(BLINK_DELAY_CYCLES);
