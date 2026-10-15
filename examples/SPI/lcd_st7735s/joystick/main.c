@@ -29,11 +29,9 @@
 
 static void hw_init(void)
 {
-    // DL_GPIO_reset(GPIOA); already included in st7735s_init();
     DL_TimerG_reset(TIMG8);
     DL_ADC12_reset(ADC0);
 
-    // DL_GPIO_enablePower(GPIOA);
     DL_TimerG_enablePower(TIMG8);
     DL_ADC12_enablePower(ADC0);
 

@@ -1,7 +1,7 @@
 include(CMakeParseArguments)
 
 function(mspm0c110x_add_firmware)
-    set(options)
+    set(options NO_STARTUP)
     set(one_value_args NAME)
     set(multi_value_args SOURCES LINK_LIBRARIES)
     cmake_parse_arguments(FW "${options}" "${one_value_args}"
@@ -11,10 +11,14 @@ function(mspm0c110x_add_firmware)
         message(FATAL_ERROR "mspm0c110x_add_firmware requires NAME")
     endif()
 
-    add_executable(${FW_NAME}
-        ${FW_SOURCES}
-        ${MSPM0C110X_SDK_SOURCE_DIR}/ti/devices/msp/m0p/startup_system_files/gcc/startup_mspm0c110x_gcc.c
-    )
+    set(firmware_sources ${FW_SOURCES})
+    if(NOT FW_NO_STARTUP)
+        list(APPEND firmware_sources
+            ${MSPM0C110X_SDK_SOURCE_DIR}/ti/devices/msp/m0p/startup_system_files/gcc/startup_mspm0c110x_gcc.c
+        )
+    endif()
+
+    add_executable(${FW_NAME} ${firmware_sources})
 
     target_compile_definitions(${FW_NAME} PRIVATE
         DeviceFamily_MSPM0C110X

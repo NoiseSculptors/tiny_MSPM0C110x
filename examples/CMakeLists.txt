@@ -1,6 +1,7 @@
 add_subdirectory(ADC/timer_trigger)
 add_subdirectory(GPIO/blink)
 add_subdirectory(GPIO/petit_fatfs_bitbang)
+add_subdirectory(GPIO/blink_assembly)
 add_subdirectory(UART/hello_world)
 add_subdirectory(TIM/toggle_max)
 add_subdirectory(I2C/SSD1306/hello_world)

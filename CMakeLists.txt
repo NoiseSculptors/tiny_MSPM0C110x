@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(tiny_MSPM0C110x C)
+project(tiny_MSPM0C110x C ASM)
 
 set(MSPM0C110X_SDK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/sdk/source")
 set(MSPM0C110X_SDK_INCLUDE_DIR "${MSPM0C110X_SDK_SOURCE_DIR}")
