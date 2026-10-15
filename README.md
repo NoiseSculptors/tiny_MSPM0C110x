@@ -114,6 +114,13 @@ very beginning of `main()` before touching any clock or system configurations.
 reliable window to attach your debugger and flash new code if something goes
 wrong.
 
+In some cases it is possible to do a factory reset using `openocd`.
+
+```sh
+openocd -f interface/cmsis-dap.cfg -f target/ti/mspm0.cfg -c "init ; mspm0_factory_reset; shutdown"
+```
+
+
 ## Disclaimer
 
 This is an independent open-source project and is not affiliated with Texas
