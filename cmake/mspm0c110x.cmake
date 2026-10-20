@@ -18,6 +18,16 @@ function(mspm0c110x_add_firmware)
         )
     endif()
 
+    set(timer_driver
+        "${MSPM0C110X_SDK_SOURCE_DIR}/ti/driverlib/dl_timer.c")
+    list(FIND FW_SOURCES "${timer_driver}" timer_driver_index)
+    if(NOT timer_driver_index EQUAL -1)
+        # Keep the TI SDK's GCC maybe-uninitialized warning suppression
+        # limited to dl_timer.c; retain project warnings for application code.
+        set_source_files_properties("${timer_driver}" PROPERTIES
+            COMPILE_OPTIONS "-Wno-maybe-uninitialized")
+    endif()
+
     add_executable(${FW_NAME} ${firmware_sources})
 
     target_compile_definitions(${FW_NAME} PRIVATE

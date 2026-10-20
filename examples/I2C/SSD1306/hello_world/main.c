@@ -49,7 +49,7 @@ int main(void)
     uint32_t fps = 0U;
     uint32_t frames = 0U;
     uint32_t elapsed_ticks = 0U;
-    uint16_t previous_count;
+    uint16_t previous_count = 0U;
     uint16_t current_count;
 
     delay_cycles(BOOT_DELAY);

@@ -209,8 +209,6 @@ int main(void)
     NVIC_ClearPendingIRQ(ADC0_INT_IRQn);
     NVIC_EnableIRQ(ADC0_INT_IRQn);
 
-    uint32_t num = 0;
-
     while (1) {
         if(adc_samples_to_read){
             sample_x = DL_ADC12_getMemResult(ADC0, DL_ADC12_MEM_IDX_0);
